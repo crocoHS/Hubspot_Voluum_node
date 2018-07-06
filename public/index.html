@@ -1,0 +1,24 @@
+<!doctype html>
+
+<!-- ASSIGN OUR ANGULAR MODULE -->
+<html ng-app="Hubspot">
+<head>
+	<!-- META -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>Hubspot App</title>
+
+	<!-- load bootstrap -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+
+</head>
+
+<!-- SET THE CONTROLLER -->
+<body ng-controller="mainController">
+	<div class="container text-center">
+		<h1>Voluum/Hubspot Integration</h1><br/>
+		<a href="https://app.hubspot.com/oauth/authorize?client_id=85b7d6e9-823c-42bd-93b6-60e5014df31f&scope=contacts%20automation&redirect_uri=http://localhost:3000/api/voluum" class="btn btn-primary btn-lg">Hubspot</a>
+	</div>
+</body>
+</html>

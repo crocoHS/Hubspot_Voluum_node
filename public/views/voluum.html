@@ -1,0 +1,324 @@
+<!DOCTYPE <!DOCTYPE html>
+<html>
+  <head>
+    <title>Voluum Information</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!--[if lte IE 8]>
+      <script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/v2-legacy.js"></script>
+    <![endif]-->
+    <script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/v2.js"></script>
+
+    <script language="javascript">
+
+      function checkAll(ele) {
+       var checkboxes = document.getElementsByTagName('input');
+
+        if (ele.checked) {
+          for (var i = 0; i < checkboxes.length; i++) {
+           if (checkboxes[i].type == 'checkbox') {
+              checkboxes[i].checked = true;
+            }
+          }
+        } else {
+          for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].type == 'checkbox') {
+              checkboxes[i].checked = false;
+            }
+          }
+        }
+      }
+
+      function updateContact(){
+
+        var selected = new Array();
+        var hubspot_data = new Array();
+
+        $("input:checkbox[name=type]:checked").each(function() {
+             selected.push($(this).val());
+        });
+
+        if (confirm("Do you really send to Hubspot!")) {
+          selected.forEach(function(element) {
+             hubspot_data.push(getData(element));
+          });
+
+          $.ajax({
+            url: "http://localhost:3000/hubspot/contact/update",
+            type:"POST",
+            data: {data: hubspot_data},
+            success: function(img){
+              alert("success!!!!");
+            }
+          });
+
+        } else {
+            alert("You pressed OK!");
+        }
+      }
+
+      function submitForm(){
+        var formData = {
+          fields: [
+            {
+              name: "email",
+              value: "croconero@gmail.com"
+            },
+            {
+              name: "firstname",
+              value: "janine"
+            },
+            {
+              name: "lastname",
+              value: "renous"
+            }
+          ]
+        };
+
+        $.ajax({
+            url: "http://localhost:3000/hubspot/form/submit",
+            type: "POST",
+            data: {data: formData},
+            success: function(img) {
+              alert("Submitted a form!");
+            }
+        });
+      }
+
+      function getData(id){
+
+        var country = $("#country_" + id).val();
+        var name = $("#name_" + id).val();
+        var firstname = name.split("_")[0];
+        var lastname = name.split("_")[1];
+        var phone = $("#phone_" + id).val();
+        var offer = $("#offer_" + id).val();
+        var index = offer.split("-").length;
+        offer = offer.split("-")[index - 1].replace(/\s/g, '');
+
+        var person = [
+                      {"property": "firstname", "value": firstname},
+                      {"property": "lastname", "value": lastname},
+                      {"property": "phone", "value": phone},
+                    ];
+
+        var persondData = {"properties": person};
+
+        var offerAssocations = { "associatedVids": [101], "associatedCompanyIds": []};
+
+        var offerProperties = [
+                            {"value": offer, "name": "dealname"},
+                            {"value": "closedwon", "name": "dealstage"},
+                            {"value": "default", "name": "pipeline"},
+                            {"value": 1530119390000, "name": "closedate"},
+                            {"value": "200", "name": "amount"},
+                            {"value": "newbusiness", "name": "dealtype"}
+                          ];
+
+        var offerData = {"associations": offerAssocations, "properties": offerProperties};
+
+        var formData = {
+          "name": offer,
+          "action": "",
+          "method": "",
+          "cssClass": "",
+          "redirect": "",
+          "submitText": "Submit",
+          "followUpId": "",
+          "notifyRecipients": "",
+          "leadNurturingCampaignId": "",
+          "formFieldGroups": [
+            {
+              "fields": [
+                {
+                  "name": "firstname",
+                  "label": "First Name",
+                  "type": "string",
+                  "fieldType": "text",
+                  "description": "",
+                  "groupName": "",
+                  "displayOrder": 0,
+                  "required": false,
+                  "selectedOptions": [],
+                  "options": [],
+                  "validation": {
+                    "name": "",
+                    "message": "",
+                    "data": "",
+                    "useDefaultBlockList": false
+                  },
+                  "enabled": true,
+                  "hidden": false,
+                  "defaultValue": "",
+                  "isSmartField": false,
+                  "unselectedLabel": "",
+                  "placeholder": ""
+                }
+              ],
+              "default": true,
+              "isSmartGroup": false
+            },
+            {
+              "fields": [
+                {
+                  "name": "lastname",
+                  "label": "Last Name",
+                  "type": "string",
+                  "fieldType": "text",
+                  "description": "",
+                  "groupName": "",
+                  "displayOrder": 1,
+                  "required": false,
+                  "selectedOptions": [],
+                  "options": [],
+                  "validation": {
+                    "name": "",
+                    "message": "",
+                    "data": "",
+                    "useDefaultBlockList": false
+                  },
+                  "enabled": true,
+                  "hidden": false,
+                  "defaultValue": "",
+                  "isSmartField": false,
+                  "unselectedLabel": "",
+                  "placeholder": ""
+                }
+              ],
+              "default": true,
+              "isSmartGroup": false
+            },
+            {
+              "fields": [
+                {
+                  "name": "email",
+                  "label": "Email",
+                  "type": "string",
+                  "fieldType": "text",
+                  "description": "",
+                  "groupName": "",
+                  "displayOrder": 2,
+                  "required": false,
+                  "selectedOptions": [],
+                  "options": [],
+                  "validation": {
+                    "name": "",
+                    "message": "",
+                    "data": "",
+                    "useDefaultBlockList": false
+                  },
+                  "enabled": true,
+                  "hidden": false,
+                  "defaultValue": "",
+                  "isSmartField": false,
+                  "unselectedLabel": "",
+                  "placeholder": ""
+                }
+              ],
+              "default": true,
+              "isSmartGroup": false
+            }
+          ],
+          "createdAt": 1318534279910,
+          "updatedAt": 1413919291011,
+          "performableHtml": "",
+          "migratedFrom": "ld",
+          "ignoreCurrentValues": false,
+          "metaData": [],
+          "deletable": true
+        };
+
+        var submitData = {
+          fields: [
+            {
+              name: "email",
+              value: "croconero@gmail.com"
+            },
+            {
+              name: "firstname",
+              value: firstname
+            },
+            {
+              name: "lastname",
+              value: lastname
+            }
+          ]
+        };
+
+        var sendData = {"personData": persondData, "offerData": offerData, "formData": formData, "submitData": submitData};
+        return sendData;
+      }
+
+      // $(window).on('shown.bs.modal', function (e) {
+      //   $('#submitModal').modal('show');
+
+      //   var selected = new Array();
+      //   $("input:checkbox[name=type]:checked").each(function() {
+      //       selected.push($(this).val());
+      //   });
+
+      //   var name = $("#name_" + selected[0]).val();
+      //   var firstname = name.split("_")[0];
+      //   var lastname = name.split("_")[1];
+
+      //   $("#firstname-6fd0db6c-b4ae-4e16-924b-920a166298e3").val(firstname);
+      //   $("#lastname-6fd0db6c-b4ae-4e16-924b-920a166298e3").val(lastname);
+      //   $("#email-6fd0db6c-b4ae-4e16-924b-920a166298e3").val("croconero@gmail.com");
+      // });
+
+    </script>
+
+  </head>
+  <body>
+    <div class="container">
+      <H1 class="text-center">Voluum Information</H1><br/>
+
+      <button class="btn btn-primary pull-right" onclick="javascript:updateContact()">Update Contact</button><br/>
+<!--       <a href="http://localhost:3000/hubspot/getbyId" class="btn btn-primary pull-right">Get By ID</a>
+      <button class="btn btn-primary pull-right" onclick="javascript:createForm()">Create a Form</button><br/>
+      <a href="http://localhost:3000/hubspot/getAllProperties" class="btn btn-primary pull-right">Get All Properties</a>
+      <button class="btn btn-primary pull-right" onclick="javascript:submitForm()">Submit a Form</button><br/>
+ -->
+
+
+      <table class="table table-bordered">
+        <tr class="info ">
+          <th class="text-center" width="5%">
+            <input type="checkbox" name="chk[]"onchange="checkAll(this)"/>
+          </th>
+          <th class="text-center" width="15%">Campaign Country</th>
+          <th class="text-center" width="25%">Campaign Name</th>
+          <th class="text-center" width="25%">Offer Name</th>
+          <th class="text-center" width="10%">Full Name</th>
+          <th class="text-center" width="10%">Phone Number</th>
+          <th class="text-center" width="10%">Conversions</th>
+        </tr>
+
+        {% for campaign in campaigns %}
+          {% set loopIndex = loop.index0 %}
+          <tr>
+              <td class="text-center">
+                <input type="checkbox" name="type" value="{{loopIndex}}" />
+              </td>
+              <td>{{ campaign.campaignCountry }}</td>
+              <td>{{ campaign.campaignName }}</td>
+              <td>{{ campaign.offerName }}</td>
+              <td>{{ campaign.customVariable3 }}</td>
+              <td>{{ campaign.customVariable1 }}</td>
+              <td>{{ campaign.conversions }}</td>
+              <input id="country_{{loopIndex}}" type="hidden" value="{{ campaign.campaignCountry }}">
+              <input id="name_{{loopIndex}}" type="hidden" value="{{ campaign.customVariable3 }}">
+              <input id="offer_{{loopIndex}}" type="hidden" value="{{ campaign.offerName }}">
+              <input id="phone_{{loopIndex}}" type="hidden" value="{{ campaign.customVariable1 }}">
+          </tr>
+        {% endfor %}
+
+      </table>
+
+      <hr>
+    </div>
+
+  </body>
+</html>
